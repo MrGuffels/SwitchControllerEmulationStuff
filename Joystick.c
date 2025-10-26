@@ -20,20 +20,30 @@ these buttons for our use.
 
 #include "Joystick.h"
 
-typedef enum {
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT,
-	X,
-	Y,
+typedef enum {	//All of the commands for controlls that you want to use go here. 
+	L_UP,		//Don't forget to add them to the case statement at the bottom to tell the computer what the commands mean
+	L_DOWN,
+	L_LEFT,
+	L_RIGHT,
+	R_UP,
+	R_DOWN,
+	R_LEFT,
+	R_RIGHT,
 	A,
 	B,
+	Y,
+	X,
 	L,
 	R,
-	THROW,
-	NOTHING,
-	TRIGGERS
+	ZL,
+	ZR,
+	MINUS,
+    PLUS,
+	TARGET,
+	ATTACK,
+	SUSPEND,
+	SYNC,
+    NOTHING
 } Buttons_t;
 
 typedef struct {
@@ -43,147 +53,195 @@ typedef struct {
 
 static const command step[] = {
 	// Setup controller
-	{ NOTHING,  250 },
-	{ TRIGGERS,   5 },
-	{ NOTHING,  150 },
-	{ TRIGGERS,   5 },
-	{ NOTHING,  150 },
-	{ A,          5 },
-	{ NOTHING,  250 },
+	{SYNC,5},
+	{NOTHING,25},
+	{SYNC,5},
+	{NOTHING,25},
+	{A,5},
+	{NOTHING,100},
 
-	// Talk to Pondo
-	{ A,          5 }, // Start
-	{ NOTHING,   30 },
-	{ B,          5 }, // Quick output of text
-	{ NOTHING,   20 }, // Halloo, kiddums!
-	{ A,          5 }, // <- I'll try it!
-	{ NOTHING,   15 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ A,          5 }, // <- OK!
-	{ NOTHING,   15 },
-	{ B,          5 },
-	{ NOTHING,   20 }, // Aha! Play bells are ringing! I gotta set up the pins, but I'll be back in a flurry
-	{ A,          5 }, // <Continue>
-	{ NOTHING,  325 }, // Cut to different scene (Knock 'em flat!)
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ A,          5 }, // <Continue> // Camera transition takes place after this
-	{ NOTHING,   50 },
-	{ B,          5 },
-	{ NOTHING,   20 }, // If you can knock over all 10 pins in one roll, that's a strike
-	{ A,          5 }, // <Continue>
-	{ NOTHING,   15 },
-	{ B,          5 },
-	{ NOTHING,   20 }, // A spare is...
-	{ A,          5 }, // <Continue>
-	{ NOTHING,  100 }, // Well, good luck
-	{ A,          5 }, // <Continue>
-	{ NOTHING,  150 }, // Pondo walks away
+	// Talk to Restruant Guy
+	{ A,5 },
+	{ NOTHING,30 },
+	{ A,5 },
+	{ NOTHING,30 },
+	{ A,5 },
+	{ NOTHING,30 },
+	{ A,5 },
+	{ NOTHING,30 },
+	{ A,5 },
+	{ NOTHING,30 },
+	{ A,5 },
+	{ NOTHING,30 },
+	{ A,5 },
+	{ NOTHING,30 },
+	{ A,5 },
+	{ NOTHING,30 },
+	{ A,5 },
+	{ NOTHING,30 },
+	{ A,5 },
+	{ NOTHING,30 },
 
-	// Pick up Snowball (Or alternatively, run to bail in case of a non-strike)
-	{ A,          5 },
-	{ NOTHING,   50 },
-	{ LEFT,      42 },
-	{ UP,        80 },
-	{ THROW,     25 },
-
-	// Non-strike alternative flow, cancel bail and rethrow
-	{ NOTHING,   30 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 }, // I have to split dialogue (It's nothing)
-	{ NOTHING,   15 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,  450 },
-	{ B,          5 }, // Snowly moly... there are rules!
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 }, // Second dialogue
-	{ NOTHING,   20 },
-	{ DOWN,      10 }, // Return to snowball
-	{ NOTHING,   20 },
-	{ A,          5 }, // Pick up snowball, we just aimlessly throw it
-	{ NOTHING,   50 },
-	{ UP,        10 },
-	{ THROW,     25 },
-
-	// Back at main flow
-	{ NOTHING,  175 }, // Ater throw wait
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 }, // To the rewards
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	
-	{ B,          5 }, // Wait for 450 cycles by bashing B (Like real players do!)
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 },
-	{ B,          5 },
-	{ NOTHING,   20 } // Saving, intermission
+	//Battle
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 },
+	{ TARGET,15 },
+	{ ATTACK,5 },
+	{ NOTHING,30 }
 };
 
 // Main entry point.
@@ -391,25 +449,41 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 
 		case PROCESS:
 
-			switch (step[bufindex].button)
+			switch (step[bufindex].button)	//From the enumneration at the top, add any commands you created to this file.
 			{
 
-				case UP:
+				case L_UP:
 					ReportData->LY = STICK_MIN;				
 					break;
 
-				case LEFT:
-					ReportData->LX = STICK_MIN;				
-					break;
-
-				case DOWN:
+				case L_DOWN:
 					ReportData->LY = STICK_MAX;				
 					break;
 
-				case RIGHT:
+				case L_LEFT:
+					ReportData->LX = STICK_MIN;				
+					break;
+
+				case L_RIGHT:
 					ReportData->LX = STICK_MAX;				
 					break;
 
+				case R_UP:
+					ReportData->RY = STICK_MIN;				
+					break;
+
+				case R_DOWN:
+					ReportData->RY = STICK_MAX;				
+					break;
+
+				case R_LEFT:
+					ReportData->RX = STICK_MIN;				
+					break;
+
+				case R_RIGHT:
+					ReportData->RX = STICK_MAX;				
+					break;
+					
 				case A:
 					ReportData->Button |= SWITCH_A;
 					break;
@@ -418,16 +492,59 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 					ReportData->Button |= SWITCH_B;
 					break;
 
+				case Y:
+					ReportData->Button |= SWITCH_Y;
+					break;
+
+				case X:
+					ReportData->Button |= SWITCH_X;
+					break;
+
+				case L:
+					ReportData->Button |= SWITCH_L;
+					break;
+
 				case R:
 					ReportData->Button |= SWITCH_R;
 					break;
-
-				case THROW:
-					ReportData->LY = STICK_MIN;				
-					ReportData->Button |= SWITCH_R;
+				
+				case ZL:
+					ReportData->Button |= SWITCH_ZL;
 					break;
 
-				case TRIGGERS:
+				case ZR:
+					ReportData->Button |= SWITCH_ZR;
+					break;
+
+				case MINUS:
+					ReportData->Button |= SWITCH_MINUS;
+					break;
+
+                case PLUS:
+                    ReportData->Button |= SWITCH_PLUS;
+					break;
+				/*
+				case SPRINT:
+					ReportData->Button |= SWITCH_B;
+					ReportData->LX = STICK_MAX;
+					break;
+
+				case SPRINT_JUMP:		//As an example of muti-button and button with stick. You could use the same style for involving the D-Pad
+					ReportData->Button |= SWITCH_B | SWITCH_A;
+					ReportData->LX = STICK_MAX;
+					break;
+
+				case SUSPEND:
+					ReportData->Button |= SWITCH_ZL | SWITCH_ZR;
+					break;
+				*/
+				case TARGET:
+					ReportData->Button |= SWITCH_ZL;
+
+				case ATTACK:
+					ReportData->Button |= SWITCH_ZL | SWITCH_A;
+
+				case SYNC:
 					ReportData->Button |= SWITCH_L | SWITCH_R;
 					break;
 
@@ -486,11 +603,6 @@ void GetNextReport(USB_JoystickReport_Input_t* const ReportData) {
 			#endif
 			return;
 	}
-
-	// // Inking
-	// if (state != SYNC_CONTROLLER && state != SYNC_POSITION)
-	// 	if (pgm_read_byte(&(image_data[(xpos / 8) + (ypos * 40)])) & 1 << (xpos % 8))
-	// 		ReportData->Button |= SWITCH_A;
 
 	// Prepare to echo this report
 	memcpy(&last_report, ReportData, sizeof(USB_JoystickReport_Input_t));
