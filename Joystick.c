@@ -21,7 +21,7 @@ these buttons for our use.
 #include "Joystick.h"
 #include "Instructions.h"
 
- State_t MODE = BATTLE_RESTAURANT;
+State_t MODE = BATTLE_RESTAURANT;
 
 // Main entry point.
 int main(void)
@@ -237,16 +237,18 @@ void take_action(Buttons_t button, USB_JoystickReport_Input_t *const ReportData)
 		ReportData->Button |= SWITCH_B | SWITCH_A;
 		ReportData->LX = STICK_MAX;
 		break;
-
-	case SUSPEND:
-		ReportData->Button |= SWITCH_ZL | SWITCH_ZR;
-		break;
 	*/
+	case HOME:
+		ReportData->Button |= SWITCH_HOME;
+		break;
+
 	case TARGET:
 		ReportData->Button |= SWITCH_ZL;
+		break;
 
 	case ATTACK:
 		ReportData->Button |= SWITCH_ZL | SWITCH_A;
+		break;
 
 	case SYNC:
 		ReportData->Button |= SWITCH_L | SWITCH_R;
@@ -254,6 +256,7 @@ void take_action(Buttons_t button, USB_JoystickReport_Input_t *const ReportData)
 
 	default:
 		reset_report(ReportData);
+		break;
 	}
 }
 
@@ -279,12 +282,14 @@ void do_steps(const command_t *steps, uint16_t steps_size, USB_JoystickReport_In
 		duration_count = 0;
 	}
 
-	if (bufindex > steps_size - 1){
+	if (bufindex > steps_size - 1)
+	{
 		bufindex = 0;
 		duration_count = 0;
+		iteration_count++;
 	}
 
-	if (iteration_count > iterations)
+	if (iteration_count > iterations - 1)
 	{
 		bufindex = 0;
 		duration_count = 0;
@@ -314,7 +319,7 @@ void GetNextReport(USB_JoystickReport_Input_t *const ReportData)
 	{
 
 	case SYNC_CONTROLLER:
-		do_steps(sync_controller, ARRAY_SIZE(sync_controller), ReportData, MODE,1);
+		do_steps(sync_controller, ARRAY_SIZE(sync_controller), ReportData, MODE, 1);
 		break;
 
 		// state = BREATHE;
@@ -347,7 +352,7 @@ void GetNextReport(USB_JoystickReport_Input_t *const ReportData)
 		// 	break;
 
 	case BATTLE_RESTAURANT:
-		do_steps(basic_interact, ARRAY_SIZE(basic_interact), ReportData, BATTLE, counter_iteration);
+		do_steps(basic_interact, ARRAY_SIZE(basic_interact), ReportData, BATTLE, restaurant_iteration);
 		break;
 
 	case BATTLE:
@@ -355,11 +360,15 @@ void GetNextReport(USB_JoystickReport_Input_t *const ReportData)
 		break;
 
 	case BENCH:
-		do_steps(basic_interact, ARRAY_SIZE(basic_interact), ReportData, BENCH, 1);
+		do_steps(bench_loop, ARRAY_SIZE(bench_loop), ReportData, BENCH, 1);
 		break;
 
 	case TELEPORT5:
 		do_steps(teleport_5, ARRAY_SIZE(teleport_5), ReportData, TELEPORT5, 1);
+		break;
+
+	case SUSPEND:
+		do_steps(home_break, ARRAY_SIZE(home_break), ReportData, DONE, 1);
 		break;
 
 	case CLEANUP:

@@ -9,13 +9,14 @@
 
 typedef enum
 {
-	SYNC_CONTROLLER,
-	BATTLE_RESTAURANT,
-	BATTLE,
-	BENCH,
-	TELEPORT5,
-	CLEANUP,
-	DONE
+    SYNC_CONTROLLER,
+    BATTLE_RESTAURANT,
+    BATTLE,
+    BENCH,
+    TELEPORT5,
+    SUSPEND,
+    CLEANUP,
+    DONE
 } State_t;
 
 typedef enum
@@ -38,9 +39,9 @@ typedef enum
     ZR,
     MINUS,
     PLUS,
+    HOME,
     TARGET,
     ATTACK,
-    SUSPEND,
     SYNC,
     NOTHING
 } Buttons_t;
@@ -53,22 +54,62 @@ typedef struct
 
 static const command_t sync_controller[] = {
     {SYNC, 5},
-    {NOTHING, 25},
+    {NOTHING, 50},
     {SYNC, 5},
-    {NOTHING, 25},
+    {NOTHING, 50},
     {A, 5},
-    {NOTHING, 100}};
+    {NOTHING, 50},
+    {B, 5},
+    {NOTHING, 30},
+    {L_LEFT, 25},
+    {NOTHING, 20},
+    {L_UP, 5},
+    {NOTHING, 20},
+    {A, 5},
+    {NOTHING, 70}};
 
-static const int counter_iteration = 30;
+static const int restaurant_iteration = 60;
 static const command_t basic_interact[] = {
     {A, 5},
-    {NOTHING, 30}};
+    {NOTHING, 10}};
 
-static const int battle_iteration = 3000;
+static const int battle_iteration = 75;
 static const command_t battle[] = {
-    {TARGET, 15},
-    {ATTACK, 5},
-    {NOTHING, 30}};
+    {TARGET, 30},
+    {ATTACK, 10},
+    {NOTHING, 20}};
+
+static const command_t bench_loop[] = {
+    {A, 5},
+    {NOTHING, 20},
+    {A, 5},
+    {NOTHING, 20},
+    {A, 5},
+    {NOTHING, 20},
+    {A, 5},
+    {NOTHING, 20},
+    {A, 5},
+    {NOTHING, 20},
+    {A, 5},
+    {NOTHING, 20},
+    {A, 5},
+    {NOTHING, 650},
+    {L_DOWN, 10},
+    {NOTHING, 20},
+    {A, 5},
+    {NOTHING, 20},
+    {A, 5},
+    {NOTHING, 20},
+    {A, 5},
+    {NOTHING, 20},
+    {A, 5},
+    {NOTHING, 20},
+    {A, 5},
+    {NOTHING, 20},
+    {A, 5},
+    {NOTHING, 20},
+    {A, 5},
+    {NOTHING, 650}};
 
 static const command_t teleport_5[] = {
     {PLUS, 5},
@@ -79,5 +120,8 @@ static const command_t teleport_5[] = {
     {A, 5},
     {NOTHING, 100},
     {R_RIGHT, 50}};
+
+static const command_t home_break[] = {
+    {HOME, 5}};
 
 #endif
